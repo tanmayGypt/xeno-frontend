@@ -1,61 +1,103 @@
-# Xeno CRM Frontend
+# Xeno CRM Backend
 
 ## Overview
-This is the frontend for the Xeno CRM platform, providing a modern, animated, and responsive user interface for customer management, segmentation, campaign creation, and analytics. Built with React and native CSS, it connects to the backend API for all data operations and authentication.
+This is the backend API for the Xeno CRM platform, providing RESTful endpoints for customer management, segmentation, campaign management, authentication, and more. It is built with Node.js, Express, and MongoDB, and supports both Google OAuth and JWT-based authentication.
 
 ## Tech Stack
-- **React.js** (with hooks)
-- **react-router-dom** (routing)
-- **axios** (API requests)
-- **@heroicons/react** (icons)
-- **Native CSS** (custom, modern, responsive)
+- **Node.js**
+- **Express.js**
+- **MongoDB** (with Mongoose ODM)
+- **Passport.js** (Google OAuth 2.0, JWT)
+- **jsonwebtoken**
+- **bcryptjs**
+- **dotenv**
+- **morgan** (logging)
+- **cors**
 
 ## Setup Instructions
-1. Clone the repository and navigate to the `frontend` folder.
+1. Clone the repository and navigate to the `backend` folder.
 2. Install dependencies:
    ```bash
    npm install
    ```
-3. Start the development server:
+3. Create a `.env` file based on `.env.example` and fill in your environment variables.
+4. Start the development server:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## Environment Variables
-- `REACT_APP_API_URL` (optional) - Set the backend API URL if not using the default proxy
+- `PORT` - Port to run the server (default: 5000)
+- `MONGODB_URI` - MongoDB connection string
+- `JWT_SECRET` - Secret for JWT token signing
+- `GOOGLE_CLIENT_ID` - Google OAuth client ID
+- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
+- `FRONTEND_URL` - URL of the frontend app (for CORS)
+- `BACKEND_URL` - (optional) Used for OAuth callback
 
 ## Main Dependencies
-- react
-- react-dom
-- react-router-dom
-- axios
-- @heroicons/react
+- express
+- mongoose
+- passport
+- passport-google-oauth20
+- passport-jwt
+- jsonwebtoken
+- bcryptjs
+- dotenv
+- morgan
+- cors
 
-## Main Pages & Components
-- **LoginPage**: User login (Google OAuth and manual login)
-- **Dashboard**: Key metrics, recent campaigns, and stats
-- **Customers**: List, add, and edit customers in a modern table
-- **Campaigns**: List, add, and edit campaigns in a modern table
-- **Segments**: List, add, and edit customer segments
-- **CustomerForm, CampaignForm, SegmentForm**: Forms for CRUD operations
-- **Layout**: Sidebar navigation and main content area
+## API Routes & Usage
 
-## Styling
-- All styles are written in native CSS (`src/styles/main.css`)
-- Modern, animated, and responsive design
-- Consistent color scheme, spacing, and typography
-- Tables, cards, and forms are visually appealing and mobile-friendly
+### Auth Routes (`/api/auth`)
+- `POST /signup` - Register a new user (email/password)
+- `POST /login` - Login with email/password
+- `GET /google` - Start Google OAuth login
+- `GET /google/callback` - Google OAuth callback
+- `GET /current` - Get current user info (mocked if unprotected)
+- `POST /logout` - Logout user
 
-## Authentication Flow
-- Google OAuth 2.0 and manual login supported
-- JWT tokens are stored and sent with API requests
-- Protected routes redirect to login if not authenticated (if enabled)
+### Customer Routes (`/api/customers`)
+- `GET /` - List all customers
+- `GET /:id` - Get customer by ID
+- `POST /` - Create a new customer
+- `PUT /:id` - Update customer by ID
+- `DELETE /:id` - Delete customer by ID
 
-## Running the App
+### Segment Routes (`/api/segments`)
+- `GET /` - List all segments
+- `GET /:id` - Get segment by ID
+- `POST /` - Create a new segment
+- `PUT /:id` - Update segment by ID
+- `DELETE /:id` - Delete segment by ID
+
+### Campaign Routes (`/api/campaigns`)
+- `GET /` - List all campaigns
+- `GET /:id` - Get campaign by ID
+- `POST /` - Create a new campaign
+- `PUT /:id` - Update campaign by ID
+- `DELETE /:id` - Delete campaign by ID
+
+### Communication Log Routes (`/api/communication-logs`)
+- `GET /` - List all communication logs
+- `GET /:id` - Get log by ID
+- `POST /` - Create a new log
+- `DELETE /:id` - Delete log by ID
+
+## Authentication
+- Google OAuth 2.0 and JWT-based authentication supported.
+- Some routes may be unprotected for demo/testing.
+- JWT tokens are issued on login and must be sent in the `Authorization` header as `Bearer <token>`.
+
+## Error Handling
+- All endpoints return JSON responses.
+- Errors are returned with appropriate HTTP status codes and a message.
+
+## Running the Server
 ```bash
-npm start
+npm run dev
 ```
 
 ---
 
-For more details, see the code and comments in each component file.
+For more details, see the code and comments in each route and model file. 
